@@ -2,12 +2,27 @@
 
 import { useChatroomStore } from '@/store/chatroom';
 import { ChatroomCard } from './ChatroomCard';
+import { ChatroomListSkeleton } from './ChatroomListSkeleton';
 
-export const ChatroomList = () => {
+interface ChatroomListProps {
+  searchQuery?: string;
+  isLoading?: boolean;
+}
+
+export const ChatroomList = ({ searchQuery = '', isLoading = false }: ChatroomListProps) => {
   const { chatrooms } = useChatroomStore();
 
+  if (isLoading) {
+    return <ChatroomListSkeleton />;
+  }
+
+  // Filter chatrooms based on search query
+  const filteredChatrooms = chatrooms.filter(chatroom =>
+    chatroom.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   // Sort chatrooms by creation date (newest first)
-  const sortedChatrooms = [...chatrooms].sort((a, b) => 
+  const sortedChatrooms = [...filteredChatrooms].sort((a, b) => 
     new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -27,13 +42,13 @@ export const ChatroomList = () => {
           className="text-lg font-medium mb-2"
           style={{ color: 'var(--primary-text)' }}
         >
-          No conversations yet
+          {searchQuery ? `No conversations found for "${searchQuery}"` : 'No conversations yet'}
         </p>
         <p 
           className="text-sm"
           style={{ color: 'var(--secondary-text)' }}
         >
-          Start a new conversation by typing in the search box above
+          {searchQuery ? 'Try a different search term' : 'Start a new conversation by typing in the search box above'}
         </p>
       </div>
     );

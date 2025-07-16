@@ -142,10 +142,20 @@ export const LoginForm = () => {
   if (countriesError) {
     return (
       <div className="text-center py-8">
-        <p className="text-red-600 mb-4">Failed to load countries</p>
+        <p className="mb-4" style={{ color: 'var(--error-text)' }}>Failed to load countries</p>
         <button
           onClick={() => window.location.reload()}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="px-4 py-2 rounded-lg transition-colors focus:outline-none"
+          style={{
+            backgroundColor: 'var(--accent)',
+            color: 'white',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--accent-hover)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'var(--accent)';
+          }}
         >
           Try Again
         </button>
@@ -158,9 +168,8 @@ export const LoginForm = () => {
       {/* Country Code and Phone Input */}
       <div className="flex space-x-3">
         <CountryCodeSelector
-          countries={countries}
           selectedCountry={selectedCountry}
-          onSelectCountry={handleCountrySelect}
+          onCountrySelect={handleCountrySelect}
           disabled={isSendingOtp || isVerifyingOtp}
         />
         <PhoneInput
@@ -178,7 +187,21 @@ export const LoginForm = () => {
           type="button"
           onClick={handleSendOtp}
           disabled={isSendingOtp || !selectedCountry || !phone}
-          className="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          className="w-full py-3 px-4 rounded-lg transition-colors disabled:cursor-not-allowed flex items-center justify-center space-x-2 focus:outline-none"
+          style={{
+            backgroundColor: (isSendingOtp || !selectedCountry || !phone) ? 'var(--disabled-bg)' : 'var(--accent)',
+            color: 'white',
+          }}
+          onMouseEnter={(e) => {
+            if (!e.currentTarget.disabled) {
+              e.currentTarget.style.backgroundColor = 'var(--accent-hover)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!e.currentTarget.disabled) {
+              e.currentTarget.style.backgroundColor = 'var(--accent)';
+            }
+          }}
         >
           {isSendingOtp ? (
             <>
@@ -203,7 +226,7 @@ export const LoginForm = () => {
           
           {/* Countdown or Enable Message */}
           {countdown > 0 && (
-            <p className="text-sm text-gray-500 text-center">
+            <p className="text-sm text-center" style={{ color: 'var(--secondary-text)' }}>
               OTP input will be enabled in {countdown} seconds
             </p>
           )}
@@ -214,7 +237,21 @@ export const LoginForm = () => {
               type="button"
               onClick={handleVerifyOtp}
               disabled={isVerifyingOtp || !otp || otp.length !== 6}
-              className="w-full bg-green-600 text-white py-3 px-4 rounded-lg hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+              className="w-full py-3 px-4 rounded-lg transition-colors disabled:cursor-not-allowed flex items-center justify-center space-x-2 focus:outline-none"
+              style={{
+                backgroundColor: (isVerifyingOtp || !otp || otp.length !== 6) ? 'var(--disabled-bg)' : 'var(--success)',
+                color: 'white',
+              }}
+              onMouseEnter={(e) => {
+                if (!e.currentTarget.disabled) {
+                  e.currentTarget.style.backgroundColor = 'var(--success-hover)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!e.currentTarget.disabled) {
+                  e.currentTarget.style.backgroundColor = 'var(--success)';
+                }
+              }}
             >
               {isVerifyingOtp ? (
                 <>

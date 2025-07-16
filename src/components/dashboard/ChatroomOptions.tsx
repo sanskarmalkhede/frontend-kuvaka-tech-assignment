@@ -28,8 +28,18 @@ export const ChatroomOptions = ({
       }
     };
 
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
   }, [onClose]);
 
   const handleDelete = () => {
@@ -96,7 +106,15 @@ export const ChatroomOptions = ({
             onRename();
             onClose();
           }}
-          className="w-full px-3 py-2 text-left text-sm hover:bg-opacity-80 flex items-center space-x-2"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              onRename();
+              onClose();
+            }
+          }}
+          tabIndex={0}
+          className="w-full px-3 py-2 text-left text-sm hover:bg-opacity-80 flex items-center space-x-2 focus:outline-none"
           style={{ 
             color: 'var(--primary-text)',
             backgroundColor: 'transparent'
@@ -112,7 +130,14 @@ export const ChatroomOptions = ({
         
         <button
           onClick={handleDelete}
-          className="w-full px-3 py-2 text-left text-sm hover:bg-opacity-80 flex items-center space-x-2"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleDelete();
+            }
+          }}
+          tabIndex={0}
+          className="w-full px-3 py-2 text-left text-sm hover:bg-opacity-80 flex items-center space-x-2 focus:outline-none"
           style={{ 
             color: 'var(--error)',
             backgroundColor: 'transparent'

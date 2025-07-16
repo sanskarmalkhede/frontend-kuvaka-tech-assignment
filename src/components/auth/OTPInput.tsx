@@ -69,7 +69,10 @@ export const OTPInput = ({
 
   return (
     <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
+      <label 
+        className="block text-sm font-medium"
+        style={{ color: 'var(--primary-text)' }}
+      >
         Enter OTP
       </label>
       <div className="flex space-x-2 justify-center">
@@ -85,16 +88,19 @@ export const OTPInput = ({
             onKeyDown={(e) => handleKeyDown(index, e)}
             onPaste={handlePaste}
             disabled={disabled}
-            className={`w-12 h-12 text-center text-lg font-semibold border-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900 ${
-              error ? 'border-red-500' : 'border-gray-300'
-            }`}
+            className="w-12 h-12 text-center text-lg font-semibold border-2 rounded-lg outline-none transition-colors disabled:cursor-not-allowed focus:outline-none"
+            style={{
+              backgroundColor: disabled ? 'var(--disabled-bg)' : 'var(--card-bg)',
+              borderColor: error ? 'var(--error)' : 'var(--border)',
+              color: 'var(--primary-text)',
+            }}
           />
         ))}
       </div>
       {error && (
-        <p className="text-sm text-red-600 text-center">{error}</p>
+        <p className="text-sm text-center" style={{ color: 'var(--error-text)' }}>{error}</p>
       )}
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-center" style={{ color: 'var(--secondary-text)' }}>
         Enter the 6-digit code sent to your phone
       </p>
     </div>

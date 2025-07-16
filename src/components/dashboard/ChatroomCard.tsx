@@ -46,7 +46,7 @@ export const ChatroomCard = ({ chatroom }: ChatroomCardProps) => {
   return (
     <>
       <div
-        className="relative p-4 rounded-lg border cursor-pointer transition-colors group"
+        className="relative p-3 sm:p-4 rounded-lg border cursor-pointer transition-colors group"
         style={{
           backgroundColor: 'var(--card-bg)',
           borderColor: 'var(--border)',
@@ -62,13 +62,13 @@ export const ChatroomCard = ({ chatroom }: ChatroomCardProps) => {
         <div className="flex items-start justify-between">
           <div className="flex-1 min-w-0">
             <h3 
-              className="font-medium text-sm truncate"
+              className="font-medium text-sm sm:text-base truncate"
               style={{ color: 'var(--primary-text)' }}
             >
               {chatroom.title}
             </h3>
             <p 
-              className="text-xs mt-1"
+              className="text-xs sm:text-sm mt-1"
               style={{ color: 'var(--secondary-text)' }}
             >
               {formatDate(chatroom.createdAt)}
@@ -76,13 +76,13 @@ export const ChatroomCard = ({ chatroom }: ChatroomCardProps) => {
           </div>
           
           <button
-            className="options-button ml-2 p-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+            className="options-button ml-2 p-1 rounded opacity-100 transition-opacity"
             onClick={handleOptionsClick}
             style={{
               color: 'var(--secondary-text)',
             }}
           >
-            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
             </svg>
           </button>

@@ -111,7 +111,7 @@ export const RenameModal = ({
               value={newTitle}
               onChange={(e) => setNewTitle(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 transition-colors"
+              className="w-full px-3 py-2 border rounded-lg focus:outline-none transition-colors"
               style={{
                 backgroundColor: 'var(--card-bg)',
                 borderColor: 'var(--border)',

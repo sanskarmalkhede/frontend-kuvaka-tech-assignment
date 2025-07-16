@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useChatroomStore } from '@/store/chatroom';
 import { useThemeStore } from '@/store/theme';
 import { ChatInterface } from '@/components/chat/ChatInterface';
+import { Sidebar } from '@/components/Sidebar';
 
 interface ChatPageProps {
   params: Promise<{
@@ -19,6 +20,7 @@ export default function ChatPage({ params }: ChatPageProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [chatroom, setChatroom] = useState<{ id: string; title: string; createdAt: string } | null>(null);
   const [chatroomId, setChatroomId] = useState<string>('');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     // Apply theme on mount
@@ -67,10 +69,10 @@ export default function ChatPage({ params }: ChatPageProps) {
             The chatroom you&apos;re looking for doesn&apos;t exist or has been deleted.
           </p>
           <button
-            onClick={() => router.push('/dashboard')}
+            onClick={() => router.push('/')}
             className="px-6 py-3 bg-[var(--accent)] text-white rounded-lg hover:bg-[var(--accent)]/90 transition-colors"
           >
-            Back to Dashboard
+            Back to Home
           </button>
         </div>
       </div>
@@ -78,37 +80,52 @@ export default function ChatPage({ params }: ChatPageProps) {
   }
 
   return (
-    <div className="min-h-screen bg-[var(--primary-bg)]">
-      {/* Header */}
-      <header className="bg-[var(--card-bg)] border-b border-[var(--border)] px-4 py-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <button
-              onClick={() => router.push('/dashboard')}
-              className="p-2 text-[var(--secondary-text)] hover:text-[var(--primary-text)] hover:bg-[var(--hover-bg)] rounded-full transition-colors"
-              title="Back to Dashboard"
-            >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <div>
-              <h1 className="text-lg font-semibold text-[var(--primary-text)]">
-                {chatroom.title}
-              </h1>
-              <p className="text-sm text-[var(--secondary-text)]">
-                AI Assistant
-              </p>
+    <div className="flex h-screen bg-[var(--primary-bg)]">
+      {/* Sidebar */}
+      <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+      
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col lg:ml-0">
+        {/* Header */}
+        <header className="bg-[var(--card-bg)] border-b border-[var(--border)] px-3 sm:px-4 py-3 sm:py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-2 sm:space-x-3">
+              <button
+                onClick={() => setSidebarOpen(true)}
+                className="p-1.5 sm:p-2 text-[var(--secondary-text)] hover:text-[var(--primary-text)] hover:bg-[var(--hover-bg)] rounded-full transition-colors lg:hidden"
+                title="Open sidebar"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+              </button>
+              <button
+                onClick={() => router.push('/')}
+                className="p-1.5 sm:p-2 text-[var(--secondary-text)] hover:text-[var(--primary-text)] hover:bg-[var(--hover-bg)] rounded-full transition-colors lg:hidden"
+                title="Back to Home"
+              >
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                </svg>
+              </button>
+              <div className="min-w-0 flex-1">
+                <h1 className="text-base sm:text-lg font-semibold text-[var(--primary-text)] truncate">
+                  {chatroom.title}
+                </h1>
+                <p className="text-xs sm:text-sm text-[var(--secondary-text)]">
+                  AI Assistant
+                </p>
+              </div>
             </div>
           </div>
-          
+        </header>
 
+        {/* Chat Interface */}
+        <div className="flex-1 overflow-hidden flex justify-center">
+          <div className="w-full max-w-4xl">
+            <ChatInterface chatroomId={chatroomId} />
+          </div>
         </div>
-      </header>
-
-      {/* Chat Interface */}
-      <div className="h-[calc(100vh-73px)]">
-        <ChatInterface chatroomId={chatroomId} />
       </div>
     </div>
   );

@@ -27,14 +27,21 @@ export const PhoneInput = ({
 
   return (
     <div className="flex-[2]">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
+      <label 
+        className="block text-sm font-medium mb-2"
+        style={{ color: 'var(--primary-text)' }}
+      >
         Phone Number
       </label>
       <input
         type="tel"
-        className={`w-full px-3 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed text-gray-900 ${
-          error ? 'border-red-500' : 'border-gray-300'
-        }`}
+        className="w-full px-3 py-3 border rounded-lg outline-none transition-colors disabled:cursor-not-allowed focus:outline-none"
+        style={{
+          backgroundColor: disabled ? 'var(--disabled-bg)' : 'var(--card-bg)',
+          borderColor: error ? 'var(--error)' : 'var(--border)',
+          color: 'var(--primary-text)',
+          height: '48px', // Match CountryCodeSelector height
+        }}
         placeholder={getPlaceholder()}
         value={value}
         onChange={handleChange}
@@ -42,10 +49,10 @@ export const PhoneInput = ({
         maxLength={selectedCountry?.phoneLength || 15}
       />
       {error && (
-        <p className="mt-1 text-sm text-red-600">{error}</p>
+        <p className="mt-1 text-sm" style={{ color: 'var(--error-text)' }}>{error}</p>
       )}
       {selectedCountry && !error && (
-        <p className="mt-1 text-xs text-gray-500">
+        <p className="mt-1 text-xs" style={{ color: 'var(--secondary-text)' }}>
           Enter {selectedCountry.phoneLength || 10} digits for {selectedCountry.name}
         </p>
       )}
