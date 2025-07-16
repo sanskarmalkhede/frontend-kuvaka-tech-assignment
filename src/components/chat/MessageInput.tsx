@@ -34,7 +34,7 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
       if (file.type.startsWith('image/')) {
         setImageFile(file);
         
-        // Create preview URL
+        // Create preview URL using FileReader (base64)
         const reader = new FileReader();
         reader.onload = (e) => {
           setImagePreview(e.target?.result as string);
@@ -54,10 +54,10 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent) => {
+  const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      handleSubmit(e);
+      handleSubmit(e as React.FormEvent);
     }
   };
 
@@ -80,53 +80,57 @@ export function MessageInput({ onSendMessage, disabled }: MessageInputProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex items-end space-x-2">
-        {/* File Upload Button */}
-        <button
-          type="button"
-          onClick={() => fileInputRef.current?.click()}
-          disabled={disabled}
-          className="flex-shrink-0 p-2 text-[var(--secondary-text)] hover:text-[var(--primary-text)] hover:bg-[var(--hover-bg)] rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-          title="Attach image"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
-          </svg>
-        </button>
+      <form onSubmit={handleSubmit}>
+        <div className="relative">
+          {/* File Upload Button - Left side */}
+          <button
+            type="button"
+            onClick={() => fileInputRef.current?.click()}
+            disabled={disabled}
+            className="absolute left-3 top-1/2 transform -translate-y-1/2 p-2 text-[var(--secondary-text)] hover:text-[var(--primary-text)] hover:bg-[var(--hover-bg)] rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Attach image"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+            </svg>
+          </button>
 
-        {/* Text Input */}
-        <div className="flex-1 relative">
+          {/* Text Input */}
           <textarea
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             disabled={disabled}
-            className="w-full px-4 py-3 bg-[var(--primary-bg)] border border-[var(--border)] rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent text-[var(--primary-text)] placeholder-[var(--secondary-text)] disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full pl-14 pr-14 py-3 bg-[var(--primary-bg)] border border-[var(--border)] rounded-2xl resize-none focus:outline-none focus:ring-2 focus:ring-[var(--accent)] focus:border-transparent text-[var(--primary-text)] placeholder-[var(--secondary-text)] disabled:opacity-50 disabled:cursor-not-allowed"
             rows={1}
             style={{ minHeight: '48px', maxHeight: '120px' }}
           />
+
+          {/* Send Button - Right side */}
+          <button
+            type="submit"
+            disabled={disabled || (!message.trim() && !imagePreview)}
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 rounded-full transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            style={{
+              backgroundColor: (message.trim() || imagePreview) ? 'var(--accent)' : 'var(--border)',
+              color: (message.trim() || imagePreview) ? 'white' : 'var(--secondary-text)',
+            }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Hidden File Input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+          />
         </div>
-
-        {/* Send Button */}
-        <button
-          type="submit"
-          disabled={disabled || (!message.trim() && !imagePreview)}
-          className="flex-shrink-0 p-3 bg-[var(--accent)] text-white rounded-full hover:bg-[var(--accent)]/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
-          </svg>
-        </button>
-
-        {/* Hidden File Input */}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-        />
       </form>
     </div>
   );

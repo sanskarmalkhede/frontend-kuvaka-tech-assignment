@@ -102,10 +102,7 @@ export default function ChatPage({ params }: ChatPageProps) {
             </div>
           </div>
           
-          <div className="flex items-center space-x-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-            <span className="text-sm text-[var(--secondary-text)]">Online</span>
-          </div>
+
         </div>
       </header>
 

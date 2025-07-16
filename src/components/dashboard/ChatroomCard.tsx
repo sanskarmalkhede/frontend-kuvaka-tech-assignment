@@ -30,8 +30,9 @@ export const ChatroomCard = ({ chatroom }: ChatroomCardProps) => {
   };
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Don't navigate if clicking on the options button
-    if ((e.target as HTMLElement).closest('.options-button')) {
+    // Don't navigate if clicking on the options button or dropdown
+    if ((e.target as HTMLElement).closest('.options-button') || 
+        (e.target as HTMLElement).closest('.options-dropdown')) {
       return;
     }
     router.push(`/chat/${chatroom.id}`);

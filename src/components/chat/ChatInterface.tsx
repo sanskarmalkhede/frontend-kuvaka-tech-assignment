@@ -46,7 +46,7 @@ export function ChatInterface({ chatroomId }: ChatInterfaceProps) {
     
     throttleRef.current = setTimeout(() => {
       simulateAIResponse(chatroomId);
-    }, 100);
+    }, 500);
   };
 
   const handleLoadMore = () => {

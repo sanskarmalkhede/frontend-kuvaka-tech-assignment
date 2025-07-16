@@ -84,7 +84,7 @@ export const ChatroomOptions = ({
   return (
     <div
       ref={dropdownRef}
-      className="absolute right-0 top-8 z-10 w-32 rounded-lg shadow-lg border"
+      className="absolute right-0 top-8 z-10 w-32 rounded-lg shadow-lg border options-dropdown"
       style={{
         backgroundColor: 'var(--card-bg)',
         borderColor: 'var(--border)',
