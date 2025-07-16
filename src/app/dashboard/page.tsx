@@ -1,12 +1,14 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useChatroomStore } from '@/store/chatroom';
 import { ChatroomList } from '@/components/dashboard/ChatroomList';
 import { DarkModeToggle } from '@/components/dashboard/DarkModeToggle';
 import { toast, Toaster } from 'react-hot-toast';
 
 export default function DashboardPage() {
+  const router = useRouter();
   const { addChatroom, initializeSampleChats } = useChatroomStore();
   const [searchValue, setSearchValue] = useState('');
 
@@ -24,9 +26,12 @@ export default function DashboardPage() {
       return;
     }
 
-    addChatroom(trimmedValue);
+    const chatroomId = addChatroom(trimmedValue);
     setSearchValue('');
     toast.success('New conversation created!');
+    
+    // Redirect to the newly created chatroom
+    router.push(`/chat/${chatroomId}`);
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {

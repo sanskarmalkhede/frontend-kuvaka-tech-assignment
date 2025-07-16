@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'react-hot-toast';
-import { useRouter } from 'next/navigation';
+
 
 import { useCountries, Country } from '@/hooks/useCountries';
 import { createLoginSchema, LoginFormData, otpSchema } from '@/lib/validation';
@@ -14,7 +14,6 @@ import { OTPInput } from './OTPInput';
 import { LoadingSkeleton } from './LoadingSkeleton';
 
 export const LoginForm = () => {
-  const router = useRouter();
   const { countries, loading: countriesLoading, error: countriesError } = useCountries();
   const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
   const [isOtpSent, setIsOtpSent] = useState(false);

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { useChatroomStore } from '@/store/chatroom';
 import { toast } from 'react-hot-toast';
 
@@ -38,7 +38,7 @@ export const ChatroomOptions = ({
       <div className="flex items-center space-x-3">
         <div className="flex-1">
           <p className="text-sm font-medium" style={{ color: 'var(--primary-text)' }}>
-            Delete "{chatroomTitle}"?
+            Delete &quot;{chatroomTitle}&quot;?
           </p>
           <p className="text-xs" style={{ color: 'var(--secondary-text)' }}>
             This action cannot be undone.
